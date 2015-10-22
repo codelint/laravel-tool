@@ -2,7 +2,7 @@
     "name": "codelint/laravel-tool",
     "description": "tool to help developing on laravel",
     "require": {
-        "laravel/framework": "\"5.0.*\""
+        "laravel/framework": "5.0.*"
     },
     "license": "MIT",
     "type": "project",
