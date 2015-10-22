@@ -1,0 +1,20 @@
+{
+    "name": "codelint/laravel-tool",
+    "description": "tool to help developing on laravel",
+    "require": {
+        "laravel/framework": "\"5.0.*\""
+    },
+    "license": "MIT",
+    "type": "project",
+    "authors": [
+        {
+            "name": "codelint",
+            "email": "codelint@foxmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-0": {"Codelint\\": "src/"},
+        "files": []
+    }
+}
