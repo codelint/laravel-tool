@@ -24,7 +24,12 @@ abstract class Behavior {
 
     private static function getBehaviorsByTag($tag_name)
     {
-        return Config::get('behavior.tags.' . $tag_name, []);
+        return Config::get('behavior.tags.' . $tag_name, array_get(static::$_config, 'behavior.tags.' . $tag_name, []));
+    }
+
+    static function setConfig($config)
+    {
+        static::$_config = $config;
     }
 
     /**
