@@ -99,7 +99,7 @@ class DBOperatorTest extends \TestCase {
         $user = $this->operator->reset()->insert($mock);
 
         // test auto build meta table
-        $this->assertFalse(Schema::hasTable('users_meta'), 'expect users_meta exist, but not');
+        $this->assertFalse(Schema::hasTable('users_meta'), 'expect users_meta not exist, but not');
         $this->operator->meta($user['id'], 'meta.key', $mock);
         $this->assertTrue(Schema::hasTable('users_meta'), 'expect users_meta exist, but not');
 
