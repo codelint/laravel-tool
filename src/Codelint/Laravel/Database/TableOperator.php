@@ -29,7 +29,7 @@ abstract class TableOperator implements ITableOperator {
      * @param array $fields
      * @return null|array
      */
-    public function findByOne(array $conds, $fields = [])
+    public function findByOne(array $conds = [], $fields = [])
     {
         $arr = $this->findBy($conds, $fields, 1);
         return empty($arr) ? null : $arr[0];

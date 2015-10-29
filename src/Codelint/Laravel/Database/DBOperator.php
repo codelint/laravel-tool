@@ -1,7 +1,9 @@
 <?php namespace Codelint\Laravel\Database;
 
 use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
+use PDO;
 
 
 /**
@@ -56,9 +58,15 @@ class DBOperator extends TableOperator {
      */
     function __construct($table, $primaryKey, $meta_key = 'iid', $fields = [])
     {
-        $this->_table = $table;
-        $this->_operator = DB::table($table);
-        $this->_pkey = $primaryKey;
+        if (Config::get('database.fetch') == PDO::FETCH_ASSOC)
+        {
+            $this->_table = $table;
+            $this->_operator = DB::table($table);
+            $this->_pkey = $primaryKey;
+        }else{
+            throw new \Exception('just support: config[database.fetch] == PDO::FETCH_ASSOC');
+        }
+
     }
 
     /**
@@ -288,7 +296,22 @@ class DBOperator extends TableOperator {
 
     public function meta_operator()
     {
-        return D($this->_table . '_meta');
+        return new DBOperator($this->_table . '_meta', 'id');
+    }
+
+    protected function build_meta_table()
+    {
+        $table = $this->table();
+        $sql = sprintf('CREATE TABLE `m2_%s_meta` (
+              `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+              `iid` bigint(20) unsigned NOT NULL DEFAULT "0",
+              `key` char(64) NOT NULL DEFAULT "",
+              `value` varchar(192) NOT NULL DEFAULT "",
+              PRIMARY KEY (`id`),
+              KEY `index_%s_meta_iid_key_value` (`iid`,`key`,`value`)
+            ) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 COMMENT="%s meta data"',
+            $table, $table, $table);
+        DB::statement($sql);
     }
 
     /**
@@ -301,7 +324,7 @@ class DBOperator extends TableOperator {
     public function meta($iid, $key, $val = null)
     {
         $iid = is_array($iid) ? $iid[$this->_pkey] : $iid;
-        $meta_op = D($this->_table . '_meta');
+        $meta_op = $this->meta_operator();
         $obj = [$this->_mkey => $iid];
         if (!$key)
         {
@@ -333,7 +356,7 @@ class DBOperator extends TableOperator {
      */
     public function metadata($iid, $data = false)
     {
-        $meta_op = D($this->_table . '_meta');
+        $meta_op = $this->meta_operator();
         if (!empty($data))
         {
             $data = empty($this->meta_sets) ? $data : array_only($data, $this->meta_sets);
@@ -477,10 +500,11 @@ class DBOperator extends TableOperator {
                 }
                 case 'null':
                 {
-                    if($val)
+                    if ($val)
                     {
                         $this->_operator->whereNull($field);
-                    }else
+                    }
+                    else
                     {
                         $this->_operator->whereNotNull($field);
                     }

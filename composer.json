@@ -4,8 +4,13 @@
     "require": {
         "laravel/framework": "5.0.*"
     },
+    "require-dev": {
+        "phpunit/phpunit": "~4.0",
+        "phpspec/phpspec": "~2.1"
+    },
+    "homepage": "http://www.inotseeyou.com/",
     "license": "MIT",
-    "type": "project",
+    "type": "library",
     "authors": [
         {
             "name": "codelint",
@@ -14,7 +19,9 @@
     ],
     "minimum-stability": "dev",
     "autoload": {
-        "psr-0": {"Codelint\\": "src/"},
+        "psr-0": {
+            "Codelint\\": "src/"
+        },
         "files": []
     }
 }
