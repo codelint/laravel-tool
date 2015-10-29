@@ -1,5 +1,6 @@
 <?php namespace Codelint\Laravel\Database;
 
+use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Mockery;
 
@@ -26,12 +27,24 @@ class DBOperatorTest extends \TestCase {
     {
         parent::setUp();
         $this->operator = DBOperator::apply('users');
-        $this->operator->delete();
+        //create table users for test
+        Schema::create('users', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->string('password', 60);
+            $table->rememberToken();
+            $table->timestamps();
+        });
     }
 
     public function tearDown()
     {
         $this->operator->reset()->delete();
+        if(Schema::hasTable('users'))
+        {
+            Schema::drop('users');
+        }
         parent::tearDown();
     }
 
