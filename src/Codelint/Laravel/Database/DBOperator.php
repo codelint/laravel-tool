@@ -1,8 +1,10 @@
 <?php namespace Codelint\Laravel\Database;
 
 use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use PDO;
 
 
@@ -83,7 +85,7 @@ class DBOperator extends TableOperator {
             $key = isset(self::$TABLE_PKEY[$table]) ? self::$TABLE_PKEY[$table] : 'id';
         }
 
-        $fields = \Cache::remember('db.cache.' . $table . '.fields', 1, function () use ($table)
+        $fields = Cache::remember('db.cache.' . $table . '.fields', 1, function () use ($table)
         {
             return (new DBOperator($table, 'id'))->fields();
         });
@@ -296,10 +298,14 @@ class DBOperator extends TableOperator {
 
     public function meta_operator()
     {
+        if(!Schema::hasTable('users_meta'))
+        {
+            $this->build_meta_table();
+        }
         return new DBOperator($this->_table . '_meta', 'id');
     }
 
-    protected function build_meta_table()
+    public function build_meta_table()
     {
         $table = $this->table();
         $sql = sprintf('CREATE TABLE `m2_%s_meta` (

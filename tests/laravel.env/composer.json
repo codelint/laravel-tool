@@ -20,7 +20,7 @@
         ],
         "psr-4": {
             "App\\": "app/",
-            "Codelint\\": "../../src/"
+            "Codelint\\": "../../src/Codelint"
         }
     },
     "autoload-dev": {
