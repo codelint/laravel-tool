@@ -21,36 +21,36 @@ class DBOperator extends TableOperator {
     /**
      * @var string 操作表名
      */
-    private $_table;
+    protected $_table;
     /**
      * @var \Illuminate\Database\Query\Builder
      */
-    private $_operator;
+    protected $_operator;
 
     /**
      * @var string 主键名
      */
-    private $_pkey = 'id';
+    protected $_pkey = 'id';
 
     /**
      * meta表的对象id键名
      * @var string
      */
-    private $_mkey = 'iid';
+    protected $_mkey = 'iid';
 
-    private $meta_sets = array();
+    protected $meta_sets = array();
 
     /**
      * @var int default is 10
      */
-    private $pageSize = 10;
+    protected $pageSize = 10;
 
     /**
      * @var int start with 1
      */
-    private $pageNo = 0;
+    protected $pageNo = 0;
 
-    private $_fields = [];
+    protected $_fields = [];
 
     /**
      * @param $table
@@ -296,28 +296,12 @@ class DBOperator extends TableOperator {
         return $this->_wheres($conds)->_operator->sum($field) ? : 0;
     }
 
+    /**
+     * @return DBOperator|Builder
+     */
     public function meta_operator()
     {
-        if(!Schema::hasTable('users_meta'))
-        {
-            $this->build_meta_table();
-        }
-        return new DBOperator($this->_table . '_meta', 'id');
-    }
-
-    public function build_meta_table()
-    {
-        $table = $this->table();
-        $sql = sprintf('CREATE TABLE `m2_%s_meta` (
-              `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-              `iid` bigint(20) unsigned NOT NULL DEFAULT "0",
-              `key` char(64) NOT NULL DEFAULT "",
-              `value` varchar(192) NOT NULL DEFAULT "",
-              PRIMARY KEY (`id`),
-              KEY `index_%s_meta_iid_key_value` (`iid`,`key`,`value`)
-            ) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8 COMMENT="%s meta data"',
-            $table, $table, $table);
-        DB::statement($sql);
+        return new MetaTableOperator($this->_table . '_meta', 'id');
     }
 
     /**
@@ -347,11 +331,11 @@ class DBOperator extends TableOperator {
         }
         else
         {
-            $val = json_encode($val);
+            // $val = json_encode($val);
             $one = $meta_op->upsertBy(array_add($obj, 'value', $val), ['iid', 'key']);
         }
 
-        return $one ? json_decode($one['value'], true) : false;
+        return array_get($one, 'value', false);
     }
 
     /**
@@ -375,7 +359,7 @@ class DBOperator extends TableOperator {
         $meta = [];
         foreach ($data as $kv)
         {
-            $kv['value'] = json_decode($kv['value'], true);
+            // $kv['value'] = json_decode($kv['value'], true);
             if (isset($meta[$kv['key']]))
             {
                 $meta[$kv['key']] = (array)$meta[$meta[$kv['key']]];

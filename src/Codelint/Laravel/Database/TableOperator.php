@@ -6,7 +6,7 @@
  * @time 23:21
  * @author Ray.Zhang <codelint@foxmail.com>
  **/
-abstract class TableOperator implements ITableOperator {
+abstract class TableOperator implements ITableOperator, IMetaOperator {
 
     /**
      *  查询方法: findBy, findByOne, findById

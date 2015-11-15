@@ -98,10 +98,7 @@ class DBOperatorTest extends \TestCase {
 
     public function testMetaOperate()
     {
-        if (Schema::hasTable('users_meta'))
-        {
-            Schema::drop('users_meta');
-        }
+        Schema::dropIfExists('users_meta');
         $mock = [
             'name' => 'hello',
             'email' => 'gzhang@codelint.com',
