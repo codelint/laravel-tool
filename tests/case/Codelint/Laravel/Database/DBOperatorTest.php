@@ -28,7 +28,8 @@ class DBOperatorTest extends \TestCase {
         parent::setUp();
         $this->operator = DBOperator::apply('users');
         //create table users for test
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('users', function (Blueprint $table)
+        {
             $table->increments('id');
             $table->string('name');
             $table->string('email')->unique();
@@ -41,7 +42,7 @@ class DBOperatorTest extends \TestCase {
     public function tearDown()
     {
         $this->operator->reset()->delete();
-        if(Schema::hasTable('users'))
+        if (Schema::hasTable('users'))
         {
             Schema::drop('users');
         }
@@ -140,6 +141,19 @@ class DBOperatorTest extends \TestCase {
                 'something...'
             ]
         ], $metadata);
+
+        $this->operator->metadata($user['id'], ['age' => 17, 'nick' => 'ray', 'sex' => '***']);
+        $metadata = $this->operator->metadata($user['id']);
+        $this->assertEquals([
+            'meta.key' => $mock,
+            'age' => 17,
+            'nick' => 'ray',
+            'sex' => '***',
+            'ext' => [
+                'something...'
+            ]
+        ], $metadata);
+
 
     }
 } 
