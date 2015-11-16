@@ -22,4 +22,6 @@ DBOperator have method below, detail see the tests/case/Codelint/Laravel/Databas
 * innerJoinOn
 
 === metadata table === 
+* meta($iid, $key, $value = false)
+* metadata($iid, $kvs)
 
