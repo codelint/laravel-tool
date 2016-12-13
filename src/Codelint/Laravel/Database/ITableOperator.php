@@ -98,6 +98,10 @@ interface ITableOperator {
      */
     public function sum($conds, $field);
 
+    public function max($conds, $field);
+
+    public function min($conds, $field);
+
     /**
      * 设置分页查询
      * @param int $pnum 页号

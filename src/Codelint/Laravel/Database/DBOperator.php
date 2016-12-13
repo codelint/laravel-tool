@@ -65,7 +65,9 @@ class DBOperator extends TableOperator {
             $this->_table = $table;
             $this->_operator = DB::table($table);
             $this->_pkey = $primaryKey;
-        }else{
+        }
+        else
+        {
             throw new \Exception('just support: config[database.fetch] == PDO::FETCH_ASSOC');
         }
 
@@ -294,6 +296,16 @@ class DBOperator extends TableOperator {
     public function sum($conds, $field)
     {
         return $this->_wheres($conds)->_operator->sum($field) ? : 0;
+    }
+
+    public function max($conds, $field)
+    {
+        return $this->_wheres($conds)->_operator->max($field) ? : 0;
+    }
+
+    public function min($conds, $field)
+    {
+        return $this->_wheres($conds)->_operator->min($field) ? : 0;
     }
 
     /**
