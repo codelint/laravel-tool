@@ -32,7 +32,7 @@ abstract class TableOperator implements ITableOperator, IMetaOperator {
     public function findByOne(array $conds = [], $fields = [])
     {
         $arr = $this->findBy($conds, $fields, 1);
-        return empty($arr) ? null : $arr[0];
+        return empty($arr) && !count($arr) ? null : $arr[0];
     }
 
     /**

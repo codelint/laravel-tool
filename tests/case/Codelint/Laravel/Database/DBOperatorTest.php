@@ -23,7 +23,7 @@ class DBOperatorTest extends \TestCase {
 
     }
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->operator = DBOperator::apply('users');
@@ -39,7 +39,7 @@ class DBOperatorTest extends \TestCase {
         });
     }
 
-    public function tearDown()
+    protected function tearDown():void
     {
         $this->operator->reset()->delete();
         if (Schema::hasTable('users'))

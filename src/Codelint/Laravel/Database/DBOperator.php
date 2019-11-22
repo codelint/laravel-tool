@@ -133,10 +133,11 @@ class DBOperator extends TableOperator {
             $conn = $this->_operator->getConnection();
             if ($conn->getName() == 'mysql')
             {
-                $results = $conn->select((new \Illuminate\Database\Schema\Grammars\MySqlGrammar())->compileColumnExists(), [$conn->getDatabaseName(), $conn->getTablePrefix() . $this->_table]);
+                $results = $conn->select((new \Illuminate\Database\Schema\Grammars\MySqlGrammar())->compileColumnListing(), [$conn->getDatabaseName(), $conn->getTablePrefix() . $this->_table]);
                 $this->_fields = array_map(function ($v)
                 {
-                    return $v['column_name'];
+                    $v = (object)$v;
+                    return $v->column_name;
                 }, $results);
             }
         }
@@ -204,7 +205,11 @@ class DBOperator extends TableOperator {
             $field = str_contains($field, '.') ? $field : $this->_table . '.' . $field;
         }
         $this->select(empty($fields) ? [$this->_table . '.*'] : $fields);
-        return $this->get();
+        $results = $this->get();
+
+        $results = json_decode(json_encode($results), true);
+
+        return $results;
     }
 
     /**
