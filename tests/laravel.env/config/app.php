@@ -143,6 +143,7 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        Codelint\Laravel\Provider\SnowIdProvider::class,
 
     ],
 

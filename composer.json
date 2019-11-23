@@ -22,6 +22,11 @@
             "Codelint\\": "src/"
         },
         "files": []
+    },
+    "scripts":{
+        "test": [
+            "php vendor/phpunit/phpunit/phpunit"
+        ]
     }
 }
 
