@@ -1,5 +1,7 @@
 <?php namespace Codelint\Laravel\Util;
 
+use PHPUnit\Framework\TestCase;
+
 
 /**
  * LunarTest:
@@ -7,7 +9,7 @@
  * @time 14:12
  * @author Ray.Zhang <codelint@foxmail.com>
  **/
-class LunarTest extends \TestCase {
+class LunarTest extends TestCase {
 
     public function testLunarToSolar()
     {

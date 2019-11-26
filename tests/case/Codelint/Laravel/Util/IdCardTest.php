@@ -1,6 +1,7 @@
 <?php namespace Codelint\Laravel\Util;
 
-use TestCase;
+use PHPUnit\Framework\TestCase;
+
 
 /**
  * IdCardTest:
