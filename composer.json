@@ -2,7 +2,7 @@
     "name": "codelint/laravel-tool",
     "description": "tool to help developing on laravel",
     "require": {
-        "laravel/framework": "5.8.*"
+        "laravel/framework": ">5.8"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.0"
