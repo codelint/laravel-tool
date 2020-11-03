@@ -32,7 +32,7 @@ class Logger {
         $message = is_string($message) ? $message : $this->json_encode($message);
         Log::info($message, $info);
 
-        if (count($mails))
+        if (count($mails) && env('LOG_MAIL_VIEW'))
         {
             Mail::to($mails)->queue((new MessageMail($message, $info))->subject($message));
         }
@@ -58,8 +58,11 @@ class Logger {
 
     public function mail($message, $info = [], $mails = [])
     {
-        $message = is_string($message) ? $message : $this->json_encode($message);
-        Mail::to(is_array($mails) && count($mails) ? $mails : $this->alert_mails)->queue((new MessageMail($message, $info))->subject($message));
+        if (env('LOG_MAIL_VIEW'))
+        {
+            $message = is_string($message) ? $message : $this->json_encode($message);
+            Mail::to(is_array($mails) && count($mails) ? $mails : $this->alert_mails)->queue((new MessageMail($message, $info))->subject($message));
+        }
     }
 
     public function alert($message, $info = [])
@@ -78,7 +81,7 @@ class Logger {
 
     public function weCorp($message, $info = [])
     {
-        if(env('LOG_WE_CORP_ID') && env('LOG_WE_CORP_SECRET'))
+        if (env('LOG_WE_CORP_ID') && env('LOG_WE_CORP_SECRET'))
         {
             dispatch(new SendWeCorpMessageJob($message, $info));
         }
