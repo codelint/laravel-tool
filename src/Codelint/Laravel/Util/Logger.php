@@ -126,7 +126,10 @@ class Logger {
                 return;
             }
 
-            
+            if (env('LOG_MAIL_DOMAIN') && count($arguments))
+            {
+                $this->notify($arguments[0], isset($arguments[1]) ? $arguments[1] : [], ["${name}@" . env('LOG_MAIL_DOMAIN')]);
+            }
         } catch (\Exception $e)
         {
             Log::error($e->getMessage());
