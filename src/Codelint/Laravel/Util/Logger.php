@@ -101,7 +101,7 @@ class Logger {
             if (Str::startsWith($name, 'notify'))
             {
                 // notify notify@samulala.cn
-                $mails = [env('LOG_NOTIFY_MAIL', 'notify@samulala.cn')];
+                $mails = [env('LOG_NOTIFY_MAIL', '')];
                 $mails = isset($arguments[2]) ? $arguments[2] : $mails;
                 $mails = (array)$mails;
                 $corps = array_filter($mails, function ($mail) {
