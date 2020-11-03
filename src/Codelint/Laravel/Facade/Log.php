@@ -1,4 +1,4 @@
-<?php namespace Base\Facade;
+<?php namespace Codelint\Laravel\Facade;
 
 use Illuminate\Support\Facades\Facade;
 
