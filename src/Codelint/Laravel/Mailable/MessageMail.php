@@ -73,7 +73,7 @@ class MessageMail extends Mailable {
             return (time() - $this->create_time) . '(s)';
         };
 
-        return $this->view(env('LOG_MAIL_VIEW'))
+        return $this->view(env('LOG_MAIL_VIEW', 'laravel-tool::mail.message'))
             ->with('mail_message', strval($this->msg))
             ->with('detail', $this->detail)
             ->with('meta', $meta);
