@@ -32,7 +32,7 @@ class Logger {
         $message = is_string($message) ? $message : $this->json_encode($message);
         Log::info($message, $info);
 
-        if (count($mails) && env('LOG_MAIL_VIEW'))
+        if (count($mails))
         {
             Mail::to($mails)->queue((new MessageMail($message, $info))->subject($message));
         }
@@ -58,11 +58,8 @@ class Logger {
 
     public function mail($message, $info = [], $mails = [])
     {
-        if (env('LOG_MAIL_VIEW'))
-        {
-            $message = is_string($message) ? $message : $this->json_encode($message);
-            Mail::to(is_array($mails) && count($mails) ? $mails : $this->alert_mails)->queue((new MessageMail($message, $info))->subject($message));
-        }
+        $message = is_string($message) ? $message : $this->json_encode($message);
+        Mail::to(is_array($mails) && count($mails) ? $mails : $this->alert_mails)->queue((new MessageMail($message, $info))->subject($message));
     }
 
     public function alert($message, $info = [])
