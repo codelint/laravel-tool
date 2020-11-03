@@ -126,10 +126,7 @@ class Logger {
                 return;
             }
 
-            if (count($arguments))
-            {
-                $this->notify($arguments[0], isset($arguments[1]) ? $arguments[1] : [], ["${name}@samulala.cn"]);
-            }
+            
         } catch (\Exception $e)
         {
             Log::error($e->getMessage());
